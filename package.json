@@ -1,0 +1,23 @@
+{
+  "name": "chattyApp",
+  "version": "yarn add express cross-env body-parser",
+  "description": "Mobile chatty App",
+  "main": "index.js",
+  "repository": "https://github.com/masumbillah/chattyApp.git",
+  "author": "MS <masum.billah78@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "apollo-server-express": "^1.3.2",
+    "body-parser": "^1.18.2",
+    "cross-env": "^5.1.3",
+    "express": "^4.16.2",
+    "graphql-tools": "^2.19.0",
+    "mongoose": "^5.0.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "faker": "^4.1.0"
+  }
+}
