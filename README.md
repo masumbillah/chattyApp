@@ -2,15 +2,16 @@ Develop chattyApp with Graphql and React-Native
 
 Help from https://www.youtube.com/watch?v=33qP1QMmjv8
 
-
-Part 1
+## Part 1
 This part is mainly for the basic setup of the server. We go over the installation of express and the basic graphql setup. We add also Mongodb and we make mocks on it.
 
-Create a folder where we gonna put the server and mobile folder in
-Cd in the server folder and run the command yarn init + click enter on each question
-Run yarn add express cross-env body-parser
-Create a folder call src and create a file in call index.js
-Put a the top of the file the basic setup of express.
+1. Create a folder where we gonna put the server and mobile folder in
+2. Cd in the server folder and run the command `yarn init` + click enter on each question
+3. Run `yarn add express cross-env body-parser`
+4. Create a folder call `src` and create a file in call `index.js`
+5. Put a the top of the file the basic setup of express.
+
+```js
 import express from 'express';
 import bodyParser from 'body-parser';
 
@@ -27,12 +28,20 @@ app.listen(PORT, err => {
     console.log(`App listen on port: ${PORT}`);
   }
 });
-Now we need to install babel in the devDependencies cause we want to write in latest javascript feature.
-yarn add -D babel-cli babel-plugin-transform-object-rest-spread babel-preset-env
+```
+5. Now we need to install babel in the devDependencies cause we want to write in latest javascript feature.
 
-Go in your package.json and add this scripts file:
+`yarn add -D babel-cli babel-plugin-transform-object-rest-spread babel-preset-env`
+
+6. Go in your `package.json` and add this scripts file:
+
+```json
 "dev": "cross-env NODE_ENV=dev nodemon --exec babel-node src/index.js"
-Create a .babelrc with this thing in.
+```
+
+7. Create a `.babelrc` with this thing in.
+
+```
 {
   "presets": [
     [
@@ -53,9 +62,13 @@ Create a .babelrc with this thing in.
     ]
   ]
 }
-Here I make use of babel-preset-env who help us to setup babel without a pain.
+```
 
-Now time to setup some graphql stuff. First create a folder graphql inside src. After create a schema.js file and put that in
+Here I make use of `babel-preset-env` who help us to setup babel without a pain.
+
+8. Now time to setup some graphql stuff. First create a folder `graphql` inside `src`. After create a `schema.js` file and put that in
+
+```js
 export default`
   type Tweet {
     _id: String
@@ -70,16 +83,23 @@ export default`
     query: Query
   }
 `;
-Here we have a basic schema for the tweet. Also we have a query call getTweets you render a list of this tweet.
+```
 
-Now time to write the resolver for this getTweets. Create a folder resolvers inside src/graphql/. After a file call tweet-resolver.js. Inside this one put this.
+Here we have a basic schema for the tweet. Also we have a query call `getTweets` you render a list of this tweet.
+
+9. Now time to write the resolver for this `getTweets`. Create a folder `resolvers` inside `src/graphql/`. After a file call `tweet-resolver.js`. Inside this one put this.
+
+```js
 import Tweet from '../../models/Tweet';
 
 export default {
   getTweets: () => Tweet.find({})
 }
-And create a index.js file inside src/graphql/resolvers/ folder and put
+```
 
+And create a `index.js` file inside `src/graphql/resolvers/` folder and put
+
+```js
 import TweetResolvers from './tweet-resolver';
 
 export default {
@@ -87,11 +107,15 @@ export default {
     getTweets: TweetResolvers.getTweets
   }
 }
-But where this Tweet models came ? Yes this is time to setup the db.
+```
 
-Create a db.js inside the src/config/ folder. Put this thing after have running this command.
-yarn add mongoose
+But where this `Tweet` models came ? Yes this is time to setup the db.
 
+10. Create a `db.js` inside the `src/config/` folder. Put this thing after have running this command.
+
+`yarn add mongoose`
+
+```js
 /* eslint-disable no-console */
 
 import mongoose from 'mongoose';
@@ -117,19 +141,27 @@ mongoose.connection
   .on('error', e => {
     throw e;
   });
-Nothing crazy here just the basic setup of a db with mongodb. But where do the constants file came ? Time to create it. So inside the src/config/ folder create a file call `constants.js' and put this thing.
+```
 
+Nothing crazy here just the basic setup of a db with mongodb. But where do the constants file came ? Time to create it. So inside the `src/config/` folder create a file call `constants.js' and put this thing.
+
+```js
 export default {
   PORT: process.env.PORT || 3000,
   DB_URL: 'mongodb://localhost/tweeter-development',
   GRAPHQL_PATH: '/graphql'
 }
+```
+
 Here this is the constants where we put the base configuration of the server.
 
-PORT -> the port of the app
-DB_URL -> url for the db
-GRAPHQL_PATH -> the url for graphql server
-Time to create the Mongodb schema of the tweet. Inside src/ folder create models folder and inside this one Tweet.js file. Inside this one we create a basic schema for now ;)
+  - PORT -> the port of the app
+  - DB_URL -> url for the db
+  - GRAPHQL_PATH -> the url for graphql server
+
+11. Time to create the Mongodb schema of the tweet. Inside `src/` folder create `models` folder and inside this one `Tweet.js` file. Inside this one we create a basic schema for now ;)
+
+```js
 import mongoose, { Schema } from 'mongoose';
 
 const TweetSchema = new Schema({
@@ -137,9 +169,13 @@ const TweetSchema = new Schema({
 });
 
 export default mongoose.model('Tweet', TweetSchema);
-Time to update the simple express server for add graphql on it inside src/index.js
-yarn add apollo-server-express graphql-tools
+```
 
+12. Time to update the simple express server for add graphql on it inside `src/index.js`
+
+`yarn add apollo-server-express graphql-tools`
+
+```js
 import express from 'express';
 import { graphqlExpress, graphiqlExpress } from 'apollo-server-express';
 import { makeExecutableSchema } from 'graphql-tools';
@@ -174,11 +210,15 @@ graphQLServer.listen(constants.PORT, err => {
     console.log(`App running on port: ${constants.PORT}`);
   }
 });
+```
+
 Nothing crazy here, basic setup + add graphiql the IDE of grahpql.
 
-Time to mocks some stuff ? Sure ;) That's gonna be easy, first think add yarn add -D faker who is a library for help you have mock data. Gonna be pretty easy here we gonna create 10 fake mock tweet.
-Inside src create a folder mocks and a file index.js inside this one.
+13. Time to mocks some stuff ? Sure ;) That's gonna be easy, first think add `yarn add -D faker` who is a library for help you have mock data. Gonna be pretty easy here we gonna create 10 fake mock tweet.
 
+Inside `src` create a folder `mocks` and a file `index.js` inside this one.
+
+```js
 import faker from 'faker';
 
 import Tweet from '../models/Tweet';
@@ -198,7 +238,11 @@ export default async () => {
     throw error;
   }
 }
-Add this mocks promise to the server inside src/index.js
+```
+
+14. Add this mocks promise to the server inside `src/index.js`
+
+```js
 // all other import
 import mocks from './mocks';
 
@@ -213,12 +257,19 @@ mocks().then(() => {
     }
   });
 });
-Time to test it. Go on https://github.com/skevy/graphiql-app and download the app. Why ? Because we gonna need this of the jwt auth later ;)
+```
 
-Open this tool now and add this in the left part. This is a simple query where we get all 10 tweets. Don't forget to put the url http://localhost:3000/graphql
+15. Time to test it. Go on https://github.com/skevy/graphiql-app and download the app. Why ? Because we gonna need this of the jwt auth later ;)
 
+16. Open this tool now and add this in the left part. This is a simple query where we get all 10 tweets. Don't forget to put the url `http://localhost:3000/graphql`
+
+```js
 {
   getTweets {
     _id
 		text
   }
+}
+```
+
+17. If all work you should see that
