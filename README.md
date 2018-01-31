@@ -276,5 +276,4 @@ mocks().then(() => {
 
 17. If all work you should see that
 
-![](https://image.ibb.co/huhn5Q/Screen_Shot_2017_07_19_at_7_10_45_PM.png)
 
