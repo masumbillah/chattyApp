@@ -1,20 +1,45 @@
-/* eslint-disable no-console */
-
 import express from 'express';
+import { graphqlExpress, graphiqlExpress } from 'apollo-server-express';
+import { makeExecutableSchema } from 'graphql-tools';
+import { createServer } from 'http';
 import bodyParser from 'body-parser';
 
 import './config/db';
-
-const app = express();
-
-const PORT = process.env.PORT || 3000;
+import constants from './config/constants';
+import typeDefs from './graphql/schema';
+import resolvers from './graphql/resolvers';
+import mocks from './mocks';
 
 app.use(bodyParser.json());
 
-app.listen(PORT, err => {
+app.use(
+  '/graphiql',
+  graphiqlExpress({
+    endpointURL: constants.GRAPHQL_PATH,
+  }),
+);
+
+app.use(
+  constants.GRAPHQL_PATH,
+  graphqlExpress({
+    schema
+  }),
+);
+
+mocks().then(() => {
+  graphQLServer.listen(constants.PORT, err => {
+    if (err) {
+      console.error(err);
+    } else {
+      console.log(`App running on port: ${constants.PORT}`);
+    }
+  });
+});
+
+graphQLServer.listen(constants.PORT, err => {
   if (err) {
     console.error(err);
   } else {
-    console.log(`App listen to port: ${PORT}`);
+    console.log(`App running on port: ${constants.PORT}`);
   }
 });
