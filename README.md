@@ -1,5 +1,8 @@
 #01 Setup basic graphql
 
+Test graphql run on terminal from graphql folder: node hello.js
+
+
 Develop chattyApp with Graphql and React-Native
 Basic setup of chatty App
 
